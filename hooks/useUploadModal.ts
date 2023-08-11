@@ -1,20 +1,15 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { create } from "zustand";
 
-import { Song } from "@/types";
+interface UploadModalStore {
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+}
 
-const useLoadImage = (song: Song) => {
-  const supabaseClient = useSupabaseClient();
-  
-  if (!song) {
-    return null;
-  }
-
-  const { data: imageData } = supabaseClient
-    .storage
-    .from('images')
-    .getPublicUrl(song.image_path);
-
-  return imageData.publicUrl;
-};
-
-export default useLoadImage;
+const useUploadModal = create<UploadModalStore>((set) => ({
+  isOpen: false,
+  onOpen: () => set({ isOpen: true }),
+  onClose: () => set({ isOpen: false }),
+}));
+``
+export default useUploadModal;
